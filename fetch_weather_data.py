@@ -3,16 +3,14 @@ Contains methods for fetching weather data from
 an api to be used for the smart mirror.
 """
 
-from matplotlib.pyplot import get
 import requests
 import json
 import os
-import sys
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
-API_KEY = ""
+API_KEY = os.getenv("API_KEY")
 
 BASE_URL = "https://weatherbit-v1-mashape.p.rapidapi.com/"
 
