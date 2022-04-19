@@ -3,6 +3,18 @@ from tkinter import *
 import os
 import time
 
+screen = Tk()
+screen.title('CS530 Smart Mirror')
+startUpText = Label(screen, font = ('Times', 40), bg='black', fg='white')
+screen.configure(background='black')
+screen.overrideredirect(True) #can't close window by regular means, get rids of window bar
+
+startUpText.config(text='Smart Mirror')
+startUpText.pack(side=LEFT, padx= 120, pady=80)
+pRight = int(screen.winfo_screenwidth()/3 - screen.winfo_reqwidth()/2) # Halves screen width & height
+pDown = int(screen.winfo_screenheight()/2 - screen.winfo_reqheight()/2) # Halves screen width & height
+screen.geometry("+{}+{}".format(pRight, pDown)) # Positions the window in the center of the page.
+
 def greetings():
     greet = "Hi!"
     greeting.config(text=greet)
@@ -40,4 +52,5 @@ timeElse()
 
 root.attributes("-fullscreen", True)
 root.configure(background='black')
-mainloop()
+screen.destroy() #destroys splash screen to open up smart mirror
+root.mainloop()
