@@ -1,20 +1,26 @@
 import tkinter
 from tkinter import *
-import os
 import time
+import os
 
+import fetch_weather_data
+import subprocess
+
+#SPLASH SCREEN STARTS
 screen = Tk()
 screen.title('CS530 Smart Mirror')
 startUpText = Label(screen, font = ('Times', 40), bg='black', fg='white')
 screen.configure(background='black')
-screen.overrideredirect(True) #can't close window by regular means, get rids of window bar
+screen.overrideredirect(True)    #can't close window by regular means, get rids of window bar
 
 startUpText.config(text='Smart Mirror')
 startUpText.pack(side=LEFT, padx= 120, pady=80)
 pRight = int(screen.winfo_screenwidth()/3 - screen.winfo_reqwidth()/2) # Halves screen width & height
 pDown = int(screen.winfo_screenheight()/2 - screen.winfo_reqheight()/2) # Halves screen width & height
 screen.geometry("+{}+{}".format(pRight, pDown)) # Positions the window in the center of the page.
+#SPLASH SCREEN ENDS
 
+#MAIN SCREEN
 def main_screen() :
     screen.destroy()
     def timeHour() :
@@ -31,10 +37,18 @@ def main_screen() :
         greet = "Hi!"
         greeting.config(text=greet)
 
+    #def weather():
+        #getWeather = subprocess.call("fetch_weather_data.py", shell=True)
+        #getWeather = exec(open("fetch_weather_data.py").read())
+        #getWeather.config(text=getWeather)
+    
+
 
     root = Tk()
     root.title('Mirror')
-    #root.configure(background='black')
+    root.configure(background='black')
+    root.attributes("-fullscreen", True)
+    root.overrideredirect(True)
 
     clock = Label(root) #clock widget
     clock.pack(anchor=NW, fill=X, padx=45)
@@ -44,6 +58,9 @@ def main_screen() :
     other = Label(root, font = ('Times', 70), bg='black', fg='white') #minutes, miliseconds, and am/pm
     other.pack(in_=clock, side=LEFT, anchor = N, ipady=15)
     
+    #getWeather = Label(root,  font = ('Times', 70), bg='black', fg='white')
+    #getWeather.pack(anchor=NE, fill=X, padx=45)
+
     greeting = Label(root, font = ('Times', 300), bg='black', fg='white')
     greeting.pack(anchor=CENTER, fill=X)
     #greeting.place(relx=.5, rely=.5, anchor=CENTER)
@@ -51,9 +68,10 @@ def main_screen() :
     greetings()
     timeHour()
     timeElse()
+    #weather()
 
-    root.attributes("-fullscreen", True)
-    root.configure(background='black')
+    #root.attributes("-fullscreen", True)
+    #root.configure(background='black')
 screen.after(3000, main_screen)
 mainloop()
 
