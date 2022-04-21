@@ -3,17 +3,19 @@ import time
 from fetch_top_headlines import TopHeadlinesAPI
 from fetch_weather_data import WeatherAPI
 
+#SPLASH SCREEN STARTS
 screen = Tk()
 screen.title('CS530 Smart Mirror')
 startUpText = Label(screen, font = ('Times', 40), bg='black', fg='white')
 screen.configure(background='black')
-screen.overrideredirect(True) #can't close window by regular means, get rids of window bar
+screen.overrideredirect(True)    #can't close window by regular means, get rids of window bar
 
 startUpText.config(text='Smart Mirror')
 startUpText.pack(side=LEFT, padx= 120, pady=80)
 pRight = int(screen.winfo_screenwidth()/3 - screen.winfo_reqwidth()/2) # Halves screen width & height
 pDown = int(screen.winfo_screenheight()/2 - screen.winfo_reqheight()/2) # Halves screen width & height
 screen.geometry("+{}+{}".format(pRight, pDown)) # Positions the window in the center of the page.
+#SPLASH SCREEN ENDS
 
 # initializing API's
 weatherAPI = WeatherAPI("San Diego", "CA", "US")
@@ -51,7 +53,9 @@ def main_screen() :
 
     root = Tk()
     root.title('Mirror')
-    #root.configure(background='black')
+    root.configure(background='black')
+    root.attributes("-fullscreen", True)
+    root.overrideredirect(True)
 
     clock = Label(root) #clock widget
     clock.pack(anchor=NW, fill=X, padx=15)
@@ -83,8 +87,8 @@ def main_screen() :
     display_temperature()
     display_descript()
 
-    root.attributes("-fullscreen", True)
-    root.configure(background='black')
+    #root.attributes("-fullscreen", True)
+    #root.configure(background='black')
 screen.after(3000, main_screen)
 mainloop()
 
