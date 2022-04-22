@@ -49,13 +49,23 @@ def main_screen() :
         weather_label.config(text=cur_weather['description'])
         #weather_label.after(200, display_descript())
 
+    def display_headlines():
+        
+        heading = Label(root, text="Today's Top Stories:", font=('Times', 20), bg='black', fg='white')
+        heading.pack()
+
+        headlines = topHeadlinesAPI.fetch_headlines()
+        for headline in headlines:
+            label = Label(root, text=headline, font=('Times', 20), bg='black', fg='white')
+            label.pack()
+
 
 
     root = Tk()
     root.title('Mirror')
     root.configure(background='black')
-    root.attributes("-fullscreen", True)
-    root.overrideredirect(True)
+    # root.attributes("-fullscreen", True)
+    # root.overrideredirect(True)
 
     clock = Label(root) #clock widget
     clock.pack(anchor=NW, fill=X, padx=15)
@@ -69,26 +79,16 @@ def main_screen() :
     weather_label = Label(root, font = ('Times', 50), bg='black', fg='white')
     weather_label.pack(in_=clock, side=RIGHT, anchor = N, ipady=15)
 
-    #weatherapp = Label(root)
-    #weatherapp.pack(anchor=NE, fill=X, padx=45)
-    #weatherapp.configure(background='black')
-    #temperature_label = Label(root, font = ('Times', 50), bg='black', fg='white')
-    #temperature_label.pack(in_=weatherapp, side=RIGHT)
-    #weather_label = Label(root, font = ('Times', 50), bg='black', fg='white')
-    #weather_label.pack(in_=weatherapp, side=RIGHT, anchor = N, ipady=15)
-
     greeting = Label(root, font = ('Times', 300), bg='black', fg='white')
     greeting.pack(anchor=CENTER, fill=X)
-    #greeting.place(relx=.5, rely=.5, anchor=CENTER)
 
     greetings()
     timeHour()
     timeElse()
     display_temperature()
     display_descript()
+    display_headlines()
 
-    #root.attributes("-fullscreen", True)
-    #root.configure(background='black')
 screen.after(3000, main_screen)
 mainloop()
 
