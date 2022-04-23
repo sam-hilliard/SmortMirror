@@ -9,6 +9,18 @@ free and open source. All users would need to build there own smart mirror then 
 buy a monitor, raspberry pi or equivalent inexpensive computer, and one-way glass, which 
 would add up to a much lower cost than the leading smart mirror brands.
 
+## Structure
+There are two main parts to this program:
+    1. Frontend/GUI
+        - Displays information to user along with a greeting.
+    2. Backend
+        - Makes API requests and scrapes webpages to deliver information to be used in the GUI
+
+The Backend, while working independently of the GUI, is used by the GUI to deliver specified
+information that will then be displayed on screen. This seperation not only allows for ease
+of development, but also allows for customizability as the user can pick and choose what should
+be displayed as well as choose to add their own.
+
 ## Usage
 Since the code is written solely in python, the user can run this project by running `main.py`
 with python
