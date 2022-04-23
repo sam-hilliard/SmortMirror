@@ -8,79 +8,91 @@ screen = Tk()
 screen.title('CS530 Smart Mirror')
 startUpText = Label(screen, font = ('Times', 40), bg='black', fg='white')
 screen.configure(background='black')
-screen.overrideredirect(True)    #can't close window by regular means, get rids of window bar
+screen.overrideredirect(True)    #can't close splash window by regular means, get rids of window bar
 
 startUpText.config(text='Smart Mirror')
 startUpText.pack(side=LEFT, padx= 120, pady=80)
-pRight = int(screen.winfo_screenwidth()/3 - screen.winfo_reqwidth()/2) # Halves screen width & height
-pDown = int(screen.winfo_screenheight()/2 - screen.winfo_reqheight()/2) # Halves screen width & height
-screen.geometry("+{}+{}".format(pRight, pDown)) # Positions the window in the center of the page.
+width = int(screen.winfo_screenwidth()/3 - screen.winfo_reqwidth()/2) # Halves screen width & height
+height = int(screen.winfo_screenheight()/2 - screen.winfo_reqheight()/2) # Halves screen width & height
+screen.geometry("+{}+{}".format(width, height)) # Positions the window in the center of the page.
 #SPLASH SCREEN ENDS
 
-# initializing API's
+# initializing APIs
 weatherAPI = WeatherAPI("San Diego", "CA", "US")
 topHeadlinesAPI = TopHeadlinesAPI(3)
 
 temperature, cur_weather = weatherAPI.fetch_cur()
 
 def main_screen() :
-    screen.destroy()
-    def timeHour() :
-        string = time.strftime("%H") #how to make hour regular and not military?
+    screen.destroy() #destroys splash screen
+    
+    def timeHour() : #gets hour place for clock
+        string = time.strftime("%H") 
         hour.config(text = string)
         hour.after(200, timeHour)
  
     def timeElse() :
-        string = time.strftime(":%M:%S %p") #%p?
+        string = time.strftime(":%M:%S %p") #gets minutes, second, and meridian places for clock
         other.config(text = string)
         other.after(200, timeElse)
 
-    def greetings():
+    def greetings(): #creates customizable greeting
         greet = "Hi!"
         greeting.config(text=greet)
 
-    def display_temperature():
+    def display_temperature(): #pulls temperature from web based api
         degree_sign = u"\N{DEGREE SIGN}"
         string = str(temperature) + degree_sign + "F"
         temperature_label.config(text=string)
         # temperature_label.after(200, display_temperature())
 
-    def display_descript():
-        weather_label.config(text=cur_weather['description'])
+    def display_descript(): #pulls weatehr description from web based api
+        string = cur_weather['description'] + " "
+        weather_label.config(text=string)
         #weather_label.after(200, display_descript())
 
-    def display_headlines():
-        
-        heading = Label(root, text="Today's Top Stories:", font=('Times', 20), bg='black', fg='white')
-        heading.pack()
+    def display_headlines(): #pulls headlines from web based api and displays it
+        article = Label(root)
+        article.pack(anchor=SW, fill=X)
+        article.configure(background='black')
+        heading = Label(root, text="TODAY'S TOP STORIES:", font=('Times', 50), bg='black', fg='white')
+        heading.pack(in_=article, side=LEFT)
 
         headlines = topHeadlinesAPI.fetch_headlines()
         for headline in headlines:
-            label = Label(root, text=headline, font=('Times', 20), bg='black', fg='white')
-            label.pack()
+            label = Label(root, text=headline, font=('Times', 25), bg='black', fg='white')
+            label.pack(side=BOTTOM, anchor = SW)
 
+    def Close():
+        root.destroy()
 
-
-    root = Tk()
+    root = Tk() #main window = mirror screen
     root.title('Mirror')
     root.configure(background='black')
-    # root.attributes("-fullscreen", True)
-    # root.overrideredirect(True)
+    root.overrideredirect(True)
+    w = root.winfo_screenwidth()               
+    h = root.winfo_screenheight()               
+    root.geometry("%dx%d" % (w, h))
 
-    clock = Label(root) #clock widget
-    clock.pack(anchor=NW, fill=X, padx=15)
-    clock.configure(background='black')
-    hour = Label(root, font = ('Times', 130), bg='black', fg='white') #hour section
-    hour.pack(in_=clock, side=LEFT)
-    other = Label(root, font = ('Times', 70), bg='black', fg='white') #minutes, miliseconds, and am/pm
-    other.pack(in_=clock, side=LEFT, anchor = N, ipady=15)
-    temperature_label = Label(root, font = ('Times', 100), bg='black', fg='white')
-    temperature_label.pack(in_=clock, side=RIGHT)
-    weather_label = Label(root, font = ('Times', 50), bg='black', fg='white')
-    weather_label.pack(in_=clock, side=RIGHT, anchor = N, ipady=15)
+    top = Label(root) #top container for clock and weather
+    top.pack(anchor=NW, fill=X, padx=15)
+    top.configure(background='black')
+    hour = Label(root, font = ('Times', 130), bg='black', fg='white') #diplays hour section
+    hour.pack(in_=top, side=LEFT)
+    other = Label(root, font = ('Times', 70), bg='black', fg='white') #displays minutes, miliseconds, and am/pm
+    other.pack(in_=top, side=LEFT, anchor = N, ipady=15)
+    temperature_label = Label(root, font = ('Times', 100), bg='black', fg='white') #displays tempterature
+    temperature_label.pack(in_=top, side=RIGHT)
+    weather_label = Label(root, font = ('Times', 50), bg='black', fg='white') #displays weather description
+    weather_label.pack(in_=top, side=RIGHT, anchor = N, ipady=15)
 
-    greeting = Label(root, font = ('Times', 300), bg='black', fg='white')
-    greeting.pack(anchor=CENTER, fill=X)
+    greeting = Label(root, font = ('Times', 300), bg='black', fg='white') #displays customizable greeting
+    greeting.pack(anchor=CENTER, fill=X, padx = 130, pady=130)
+    
+    exit_button = Button(root, bg='black', fg='black', height=25, width=20,
+                         highlightcolor='black', activebackground='black', activeforeground='black',
+                         borderwidth=0, highlightthickness=0, command=Close)  #discreet button to close easier
+    exit_button.pack(anchor= SE, side=RIGHT, padx = 25, pady = 25)
 
     greetings()
     timeHour()
@@ -91,5 +103,3 @@ def main_screen() :
 
 screen.after(3000, main_screen)
 mainloop()
-
-#do we need a close or destroy eventually??
