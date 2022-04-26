@@ -34,3 +34,11 @@ the Rapid API site.
 
 Once generated, a `.env` file would then need to be placed in the root project folder with the contents:
 `API_KEY = "<API key>"`
+
+## Requirements
+- Beautiful Soup 4
+- Requests
+- python_dotenv
+
+### Installation Instructions
+- `pip install bs4 requests python_dotenv`
