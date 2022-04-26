@@ -44,24 +44,25 @@ def main_screen() :
         degree_sign = u"\N{DEGREE SIGN}"
         string = str(temperature) + degree_sign + "F"
         temperature_label.config(text=string)
-        # temperature_label.after(200, display_temperature())
+        temperature_label.after(200, display_temperature)
 
     def display_descript(): #pulls weatehr description from web based api
         string = cur_weather['description'] + " "
         weather_label.config(text=string)
-        #weather_label.after(200, display_descript())
+        weather_label.after(200, display_descript)
 
     def display_headlines(): #pulls headlines from web based api and displays it
         article = Label(root)
         article.pack(anchor=SW, fill=X)
         article.configure(background='black')
         heading = Label(root, text="TODAY'S TOP STORIES:", font=('Times', 50), bg='black', fg='white')
-        heading.pack(in_=article, side=LEFT)
+        heading.pack(in_=article, side=LEFT, padx=5, pady=5)
 
         headlines = topHeadlinesAPI.fetch_headlines()
-        for headline in headlines:
-            label = Label(root, text=headline, font=('Times', 25), bg='black', fg='white')
-            label.pack(side=BOTTOM, anchor = SW)
+        string = headlines[0] + "\n" + headlines[1] + "\n" + headlines[2] + "\n"
+        label = Label(root, text=string, font=('Times', 25), justify=LEFT, bg='black', fg='white')
+        label.pack(side=BOTTOM, anchor=SW, padx=5, pady=5)
+        label.after(200, display_headlines)
 
     def Close():
         root.destroy()
